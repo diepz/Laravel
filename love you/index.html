@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Trinh my Love for me</title>
+  
+  <style>
+      @import url("https://fonts.googleapis.com/css?family=Nunito:400,700");
+
+      * {
+          /* border: 2px solid red; */
+      }
+
+      :root {
+          --font: "Nunito";
+          --bold: 700;
+          --regular: 400;
+          --page-background: #e5e5e5;
+          --frame-background: #888888;
+          --notif-background: #f9f9f9;
+      }
+
+      body {
+          margin: 0;
+          height: 100vh;
+          font-family: var(--font);
+          background: var(--page-background);
+      }
+
+      .App {
+          text-align: center;
+      }
+
+      .center {
+          position: relative;
+          left: 50%;
+          transform: translateX(-50%);
+      }
+
+      .notif {
+          position: relative;
+          width: 330px;
+          height: 136px;
+          border-radius: 20px;
+          background: var(--notif-background);
+      }
+
+      .content,
+      .snooze,
+      .tick {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+
+      .snooze,
+      .tick {
+          cursor: pointer;
+      }
+
+      .content {
+          width: 100%;
+          height: 100%;
+      }
+
+      .content span {
+          margin: 30px;
+          font-weight: var(--bold);
+          color: #333;
+          text-align: left;
+      }
+
+      .action-block {
+          position: relative;
+          margin-top: 15px;
+          width: 330px;
+          height: 46px;
+      }
+
+      .snooze {
+          position: absolute;
+          left: 0;
+          width: 135px;
+          height: 46px;
+          border-radius: 20px;
+          background: #c4c4c4;
+      }
+
+      .snooze span {
+          margin: auto;
+          font-size: 24px;
+          font-weight: var(--regular);
+          width: 100%;
+      }
+
+      .tick {
+          position: absolute;
+          right: 0;
+          width: 67px;
+          height: 46px;
+          border-radius: 20px;
+          background: #b0c6a6;
+      }
+
+      .container {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: -250px;
+          margin: auto;
+          padding-top: 30px;
+          text-align: center;
+          transition: transform 0.6s cubic-bezier(1, -0.51, 0.65, 1);
+      }
+
+      .frame {
+          position: relative;
+          border: 24px solid #333;
+          border-radius: 50px;
+          width: 375px;
+          height: 810px;
+          overflow: hidden;
+          margin: auto;
+          top: 80px;
+          background: var(--frame-background);
+      }
+
+      .visible {
+          display: initial;
+      }
+
+      .hidden {
+          display: none;
+      }
+
+      @media screen and (max-width: 600px) {
+          .frame {
+              width: 100vw;
+              height: 100vh;
+              border: 0;
+              border-radius: 0;
+              top: 0;
+          }
+      }
+
+  </style>
+  
+      <!--<link rel="stylesheet" href="css/style.css">-->
+
+  
+</head>
+
+<body>
+
+  <div class="App">
+  <div class="frame">
+    <div class="container">
+    </div>
+  </div>
+</div>
+  
+  
+
+    <script>
+        const sleepTime = 900;
+        const messages = {
+            0: {
+                msg: "Hello my love 👋",
+                action: false,
+                font: 36
+            },
+            1: {
+                msg: "How is your day? 🌈",
+                action: false,
+                font: 36
+            },
+            2: {
+                msg: "💓",
+                action: false,
+                font: 24
+            },
+            3: {
+                msg: "Right now I'm going to tell you one thing 📖",
+                action: false,
+                font: 24
+            },
+            4: {
+                msg: "Do you love me? 💘",
+                action: true,
+                font: 24
+            },
+            5: {
+                msg: "let's do it!! 🔝",
+                action: false,
+                font: 36
+            },
+            6: {
+                msg: "Do you want to live with me forever? 💗",
+                action: true,
+                font: 24
+            },
+            7: {
+                msg: "Great!! 🔝",
+                action: false,
+                font: 24
+            },
+            8: {
+                msg: "💝 I MISS YOU 💝",
+                action: true,
+                font: 24
+            },
+            9: {
+                msg: "LOVE YOU FOREVER 💏",
+                action: false,
+                font: 24
+            },
+            10: {
+                msg:
+                    'Checkout Lucagez profile🚀<br>👉 <a href="https://codepen.io/lucagez">Click Here</a>',
+                action: true,
+                font: 24
+            }
+        };
+
+        const sleep = milliseconds => {
+            return new Promise(resolve => setTimeout(resolve, milliseconds));
+        };
+
+        function action(direction, container, notif, actionBlock) {
+            move(container, direction);
+            sleep(sleepTime * 0.8).then(() => {
+                container.removeChild(notif);
+                container.removeChild(actionBlock);
+            });
+            return;
+        }
+
+        function move(element, direction) {
+            const moveObj = {
+                down: [0, 250],
+                right: [400, 250],
+                up: [0, -300]
+            };
+
+            element.style.transform = `translate(${moveObj[direction][0]}px, ${
+                moveObj[direction][1]
+                }px)`;
+            return;
+        }
+
+        function setup(info, index, container, content, notif, actionBlock) {
+            notif.classList.add("notif", "center");
+            content.classList.add("content");
+            actionBlock.classList.add("action-block", "center");
+            content.style.fontSize = `${info[index].font}px`;
+            content.innerHTML = `<span>${info[index].msg}</span>`;
+            actionBlock.innerHTML =
+                '<div class="snooze" ><span>Sleep 😴</span></div><div class="tick" >✔</div>';
+            notif.appendChild(content);
+            console.log(notif);
+            return;
+        }
+
+        function render(info, index) {
+            const notif = document.createElement("div");
+            const content = document.createElement("div");
+            const actionBlock = document.createElement("div");
+            const container = document.querySelector(".container");
+
+            setup(info, index, container, content, notif, actionBlock);
+
+            if (info[index].action) {
+                container.appendChild(notif);
+                container.appendChild(actionBlock);
+
+                move(container, "down");
+                document.querySelector(".snooze").addEventListener("click", () => {
+                    action("up", container, notif, actionBlock);
+                    sleep(sleepTime).then(() => render(info, index + 1));
+                });
+
+                document.querySelector(".tick").addEventListener("click", () => {
+                    action("right", container, notif, actionBlock);
+                    sleep(sleepTime).then(() => render(info, index + 1));
+                });
+            } else {
+                container.appendChild(notif);
+                move(container, "down");
+                sleep(sleepTime * 2)
+                    .then(() => move(container, "up"))
+                    .then(() => {
+                        sleep(sleepTime).then(() => {
+                            container.removeChild(notif);
+                            render(info, index + 1);
+                        });
+                    });
+            }
+        }
+
+        render(messages, 0);
+
+    </script>
+
+
+
+
+</body>
+
+</html>

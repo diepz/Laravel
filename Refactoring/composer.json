@@ -1,0 +1,8 @@
+{
+    "require": {
+        "cviebrock/eloquent-sluggable": "^4.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7"
+    }
+}
